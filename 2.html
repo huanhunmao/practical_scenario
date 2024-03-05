@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lazy Load Images</title>
+</head>
+<body>
+  <div class="image-container">
+    <div style="height: 5000px;">占位</div>
+    <img class="lazy-load" data-src="./pic1.webp" alt="Image 1">
+    <img class="lazy-load" data-src="./RN_Webview.png" alt="Image 2">
+    <!-- Add more images as needed -->
+  </div>
+
+  <script src="./2.图片懒加载.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const lazyLoad = new LazyLoadImages('.lazy-load');
+      console.log('lazyLoad',lazyLoad);
+    });
+  </script>
+
+</body>
+</html>
