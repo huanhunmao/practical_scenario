@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Scroll List</title>
+    <style>
+          #scrollable-container {
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+            }
+    </style>
+</head>
+<body>
+    <div id="scrollable-container">
+        <ul id="infinite-list">
+ <!-- Existing list items here -->
+        </ul>
+    </div>
+        
+</body>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    const scrollableContainer = document.getElementById('scrollable-container');
+    const infiniteList = document.getElementById('infinite-list');
+
+    let data = []
+    for(let i = 0; i <= 20; i++) {
+        data.push(`<li>Item ${i}</li>`)
+    }
+    infiniteList.innerHTML = data.join('')
+    console.log('infiniteList',infiniteList.children); // array HTMLCollection(21) [li, li, li, li, li, li, li, li, li, li, li, li, li, li, li, li, li, li, li, li, li]
+
+    // Function to load more data
+    function loadMoreData(){
+        setTimeout(function(){  
+            const newData = []
+            const startIndex = infiniteList.children.length + 1
+            const endIndex = startIndex + 9 
+
+            for(let i = startIndex; i <= endIndex; i++){
+                newData.push(`<li>Item ${i}</li>`)
+            }
+
+            infiniteList.innerHTML += newData.join('') // Load 10 more items
+        },500)
+    }
+
+    scrollableContainer.addEventListener('scroll', function(){
+        if(scrollableContainer.scrollTop + scrollableContainer.clientHeight >= infiniteList.scrollHeight){
+            loadMoreData()
+        }
+    })
+})
+
+</script>
+</html>

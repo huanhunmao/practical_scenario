@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+class AsyncTaskQueue{
+    constructor(){
+        this.queue = []
+        this.isProcessing = false
+    }
+
+    addTask(task,p=0){
+        this.queue.push({task, p})
+
+        if(!this.isProcessing){
+            this.taskProcess()
+        }
+    }
+
+    async taskProcess(){
+        this.isProcessing = true 
+        while(this.queue.length > 0){
+            this.queue.sort((a,b) => b.p - a.p)
+            const nextTask = this.queue.shift()
+            try{
+                await nextTask.task()
+            }catch(e){
+                console.error(e)
+            }
+        }
+        this.isProcessing = false 
+    }
+}
+
+const queueTask = new AsyncTaskQueue()
+
+function asyncTask(task){
+    return new Promise(resolve => {
+        setTimeout(() => {
+            console.log(`${task} finished`)
+            resolve()
+        },Math.random() * 1000)
+    })
+}
+
+queueTask.addTask(() => asyncTask('task 1'))
+queueTask.addTask(() => asyncTask('task 2'),1)
+queueTask.addTask(() => asyncTask('task 3'))
+</script>
+</html>

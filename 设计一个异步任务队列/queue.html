@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+<script>
+    // **设计一个异步任务队列**：
+// 创建一个异步任务队列系统，保证任务按照先进先出（FIFO）原则执行，并支持任务优先级调整
+
+// 创建一个任务队列（Task Queue）来存储待执行的任务。
+// 使用异步函数来执行任务，并在任务完成后执行下一个任务。
+// 为了支持任务优先级调整，可以在任务对象中添加优先级属性，并根据优先级对任务进行排序
+
+ // 当调用 shift() 方法时，它会返回队列中的第一个任务对象，并将该任务对象从队列中移除。
+ // 这样就保证了每次执行任务时都是取得队列中的下一个任务，从而实现了按照先进先出的原则执行任务
+ class AsyncTaskQueue {
+  constructor() {
+    this.queue = []; // 存储任务的队列
+    this.isProcessing = false; // 标记是否正在处理任务
+  }
+
+  // 添加任务到队列
+  addTask(task, priority = 0) {
+    this.queue.push({ task, priority });
+    // 每次添加任务后都检查是否需要开始执行任务
+    if (!this.isProcessing) {
+      this.processTasks();
+    }
+  }
+
+  // 执行任务
+  async processTasks() {
+    this.isProcessing = true;
+    while (this.queue.length > 0) {
+      // 按照优先级对任务进行排序
+      this.queue.sort((a, b) => b.priority - a.priority);
+      const nextTask = this.queue.shift(); // 获取下一个任务
+      try {
+        await nextTask.task(); // 执行任务
+      } catch (error) {
+        console.error('Error executing task:', error);
+      }
+    }
+    this.isProcessing = false;
+  }
+}
+
+// 创建异步任务队列实例
+const taskQueue = new AsyncTaskQueue();
+
+// 示例任务
+function asyncTask(name) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      console.log(`Task ${name} completed`);
+      resolve();
+    }, Math.random() * 1000);
+  });
+}
+
+// 添加一些任务到队列
+taskQueue.addTask(() => asyncTask('Task 1'));
+taskQueue.addTask(() => asyncTask('Task 2'), 1); // 添加优先级更高的任务
+taskQueue.addTask(() => asyncTask('Task 3'));
+// taskQueue.addTask(() => asyncTask('Task 4'),10);
+
+// 示例：动态调整任务优先级
+setTimeout(() => {
+  console.log('Adjusting task priority...');
+  taskQueue.queue.forEach(task => {
+    if (task.priority === 0) {
+      task.priority = 2; // 将优先级为0的任务提升为最高优先级
+    }
+  });
+}, 500);
+
+// 添加更多任务到队列
+setTimeout(() => {
+  taskQueue.addTask(() => asyncTask('Task 4'), 0); // 添加优先级最低的任务
+}, 2000);
+
+  
+</script>
+</html>

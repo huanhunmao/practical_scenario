@@ -1,0 +1,26 @@
+// 实现10个按钮，点击每个按钮时显示其对应的编号（1-10）。注意，这个问题中涉及JavaScript闭包的知识，确保每个按钮点击时能正确弹出与其绑定的数字
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>test</h1>
+</body>
+<script>
+    for(let i = 1; i <= 10; i++){
+        const btn = document.createElement('button')
+        btn.textContent = i
+        // 使用了一个立即调用的函数表达式来创建一个闭包，将每个按钮的编号作为参数传递给该函数，从而捕获了按钮对应的编号，确保点击按钮时能够正确地显示其对应的编号
+        btn.addEventListener('click', (function(num){
+            return function(){
+                alert(num)
+            }
+        })(i))
+        document.body.appendChild(btn)
+    }
+</script>
+</html>

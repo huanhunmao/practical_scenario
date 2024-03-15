@@ -1,0 +1,23 @@
+{
+  "name": "practical_scenario",
+  "version": "1.0.0",
+  "description": "一些情景问题总结",
+  "main": "1.LRU.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huanhunmao/practical_scenario.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/huanhunmao/practical_scenario/issues"
+  },
+  "homepage": "https://github.com/huanhunmao/practical_scenario#readme",
+  "dependencies": {
+    "redux": "^5.0.1"
+  }
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>scroll</title>
+    <style>
+        #container {
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <ul id="inner"></ul>
+    </div>
+</body>
+<script>
+    const container = document.getElementById('container')
+    const inner = document.getElementById('inner')
+
+    const data = []
+    for(let i = 0; i <= 20; i++){
+        data.push(`<li> item ${i}</li>`)
+    }
+
+    inner.innerHTML = data.join('')
+
+    function loadMore(){
+        setTimeout(function (){
+            const newData = []
+            const startIdx = inner.children.length + 1
+            const endIdx = startIdx + 9
+            for(let i = startIdx; i <= endIdx; i ++){
+                newData.push(`<li> item ${i}</li>`)
+            }
+
+            inner.innerHTML += newData.join('')
+        },500)
+    }
+    
+    container.addEventListener('scroll', function(){
+        if(container.scrollTop + container.clientHeight >= inner.scrollHeight){
+            loadMore()
+        }
+    })
+</script>
+</html>

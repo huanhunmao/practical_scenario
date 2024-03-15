@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-level Menu</title>
+    <style>
+        /* ul {
+          list-style-type: none;
+          padding: 0;
+        } */
+        ul ul {
+          display: none;
+        }
+        /* li {
+          margin-bottom: 5px;
+        } */
+        li:hover > ul {
+          display: block;
+        }
+      </style>
+</head>
+<body>
+    <div id="menu"></div>
+</body>
+<script>
+    // const menuData = [
+    //     {
+    //         label: 'Home',
+    //         link: '/'
+    //     },
+    //     {
+    //         label: 'Products',
+    //         children: [
+    //             {
+    //                 label: 'Electronics',
+    //                 children: [
+    //                     {
+    //                         label: 'Mobile Phone',
+    //                         link: '/products/mobile-phones'
+    //                     },
+    //                     {
+    //                         label: 'Laptops',
+    //                         link: '/products/laptops'
+    //                     }
+    //                 ]
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         label: 'Clothing',
+    //         children: [
+    //             {
+    //                 label: 'Men\'s Clothing',
+    //                 link: '/products/mens-clothing'
+    //             },
+    //             {
+    //                 label: 'Women\'s Clothing',
+    //                 link: '/products/womens-clothing'
+    //             },
+    //         ]
+    //     },
+    //     {
+    //         label: 'About us',
+    //         link: '/about'
+    //     }
+    // ]
+    const menuData = [
+    {
+        label: 'home1',
+        link: '/home1'
+    },
+    {
+        label: 'products',
+        children: [
+            {
+                label: 'elc',
+                children: [
+                    {
+                        label: '1',
+                        link: '/1'
+                    },
+                    {
+                        label: '2',
+                        link: '/2'
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        label: 'other',
+        children: [
+            {
+                label: 'ppx',
+                children: [
+                    {
+                        label: 'ppx1',
+                        children: [
+                            {
+                                label: 'ppx2',
+                                children: [
+                                    {
+                                        label:'ppx3',
+                                        children: [
+                                            {
+                                                label: 'ppx4'
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        label: 'about',
+        link: '/about'
+    }
+]
+
+    // function renderMenu(data, parent){
+    //     const ul = document.createElement('ul')
+    //     parent.appendChild(ul)
+
+    //     data.forEach(item => {
+    //         const li = document.createElement('li')
+    //         const link = document.createElement('a')
+    //         link.textContent = item.label
+    //         // 有链接 点击链接可以跳转
+    //         if(item.link){
+    //             link.href = item.link
+    //         }else{
+    //             link.href = '#'
+    //         }
+
+    //         li.appendChild(link)
+    //         ul.appendChild(li)
+
+    //         // 如果该菜单项有子菜单，则递归地调用 renderMenu 来生成子菜单
+    //         if(item.children){
+    //             renderMenu(item.children, li)
+    //         }
+    //     })
+    // }
+
+
+    function renderMenu(data, parent){
+    const ul = document.createElement('ul')
+    parent.appendChild(ul)
+
+    data.forEach(item => {
+        const li = document.createElement('li')
+        const link = document.createElement('a')
+        link.textContent = item.label
+
+        if(item.link){
+            link.href = item.link 
+        }else{
+            link.href = '#'
+        }
+
+        ul.appendChild(li)
+        li.appendChild(link)
+
+        if(item.children){
+            renderMenu(item.children, li)
+        }
+    })
+}
+    const menuContainer = document.getElementById('menu')
+    renderMenu(menuData, menuContainer)
+</script>
+</html>
