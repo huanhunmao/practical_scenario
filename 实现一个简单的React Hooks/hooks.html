@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React Hook with CDN</title>
+  <!-- 引入React和ReactDOM的CDN链接 -->
+  <script src="https://cdn.jsdelivr.net/npm/react@17/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@17/umd/react-dom.development.js"></script>
+</head>
+<body>
+
+<div id="root"></div> <!-- 这里是挂载点 -->
+
+<script>
+    // 这个 js 需要 babel 转化 后才能在 浏览器中使用  
+    // 文件 hooks_babel.html 就是转化后的文件
+  // 定义自定义Hook
+  function useAuthorization() {
+    const [isAuthorized, setIsAuthorized] = React.useState(false);
+
+    React.useEffect(() => {
+      // 模拟从服务器获取用户授权状态
+      const storedAuthorizationStatus = localStorage.getItem('isAuthorized');
+      if (storedAuthorizationStatus) {
+        setIsAuthorized(true);
+      }
+    }, []);
+
+    const updateAuthorizationStatus = (status) => {
+      setIsAuthorized(status);
+      localStorage.setItem('isAuthorized', status);
+    };
+
+    return { isAuthorized, updateAuthorizationStatus };
+  }
+
+  // 定义组件
+  function AuthComponent() {
+    const { isAuthorized, updateAuthorizationStatus } = useAuthorization();
+
+    return (
+      <div>
+        <h1>User Authorization Status: {isAuthorized ? 'Authorized' : 'Not Authorized'}</h1>
+        <button onClick={() => updateAuthorizationStatus(true)}>Authorize</button>
+        <button onClick={() => updateAuthorizationStatus(false)}>Unauthorize</button>
+      </div>
+    );
+  }
+
+  // 渲染组件到页面上
+  ReactDOM.render(<AuthComponent />, document.getElementById('root')); // 将组件渲染到指定id的DOM元素上
+</script>
+
+</body>
+</html>

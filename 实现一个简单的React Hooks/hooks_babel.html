@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React Hook with CDN</title>
+  <!-- 引入React和ReactDOM的CDN链接 -->
+  <script src="https://cdn.jsdelivr.net/npm/react@17/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@17/umd/react-dom.development.js"></script>
+</head>
+<body>
+
+<div id="root"></div> <!-- 这里是挂载点 -->
+
+<script>
+"use strict";
+
+// 定义自定义Hook
+function useAuthorization() {
+  var _React$useState = React.useState(false),
+      isAuthorized = _React$useState[0],
+      setIsAuthorized = _React$useState[1];
+
+  React.useEffect(function () {
+    // 模拟从服务器获取用户授权状态
+    var storedAuthorizationStatus = localStorage.getItem('isAuthorized');
+    if (storedAuthorizationStatus) {
+      setIsAuthorized(true);
+    }
+  }, []);
+
+  var updateAuthorizationStatus = function updateAuthorizationStatus(status) {
+    setIsAuthorized(status);
+    localStorage.setItem('isAuthorized', status);
+  };
+
+  return {
+    isAuthorized: isAuthorized,
+    updateAuthorizationStatus: updateAuthorizationStatus
+  };
+} // 定义组件
+
+
+function AuthComponent() {
+  var _useAuthorization = useAuthorization(),
+      isAuthorized = _useAuthorization.isAuthorized,
+      updateAuthorizationStatus = _useAuthorization.updateAuthorizationStatus;
+
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", null, "User Authorization Status: ", isAuthorized ? 'Authorized' : 'Not Authorized'), /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return updateAuthorizationStatus(true);
+    }
+  }, "Authorize"), /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return updateAuthorizationStatus(false);
+    }
+  }, "Unauthorize"));
+} // 渲染组件到页面上
+
+
+ReactDOM.render( /*#__PURE__*/React.createElement(AuthComponent, null), document.getElementById('root')); // 将组件渲染到指定id的DOM元素上
+
+</script>
+
+</body>
+</html>

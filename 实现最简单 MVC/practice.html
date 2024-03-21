@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mvc</title>
+</head>
+<body>
+    <div id="app"></div>
+</body>
+<script>
+class Model{
+    constructor(data){
+        this.data  = data
+    }
+
+    getData(){
+        return this.data
+    }
+}
+
+class View{
+    constructor(){
+        this.root = document.getElementById("app");
+    }
+
+    render(data){
+        this.root.innerHTML = `<h1>${data}</h1>`
+    }
+}
+
+class Controller {
+    constructor(model, view){
+        this.model = model
+        this.view = view
+    } 
+    
+    init(){
+        const data = this.model.getData()
+        this.view.render(data)
+    }
+}
+
+// 
+const model = new Model('hahaha, Marxu111')
+const view = new View()
+const controller = new Controller(model, view)
+controller.init()
+
+</script>
+</html>

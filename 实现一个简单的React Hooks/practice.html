@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React Hook with CDN</title>
+  <!-- 引入React和ReactDOM的CDN链接 -->
+  <script src="https://cdn.jsdelivr.net/npm/react@17/umd/react.development.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@17/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+
+<div id="root"></div> <!-- 这里是挂载点 -->
+
+<script type="text/babel">
+   // 自定义 hook
+    function useAuth(){
+        const [isAuth, setIsAuth] = React.useState(false)
+
+        React.useEffect(() => {
+            const hasIsAuth = localStorage.getItem('isAuth');
+            if(hasIsAuth === 'true'){ // 假设存储的是字符串化的布尔值
+                setIsAuth(JSON.parse(hasIsAuth)); // 解析为布尔值
+            }
+        },[])
+
+        const  updateAuth = (status) => {
+            setIsAuth(status);
+            localStorage.setItem('isAuth', JSON.stringify(status)); // 存储为字符串化的布尔值
+        }
+
+        return {
+            isAuth, 
+            updateAuth, 
+        }
+    }
+
+    function AuthComponent(){
+        const {isAuth, updateAuth} = useAuth()
+        return (
+            <div>
+            <h1>{isAuth ? '已授权' : '未授权'}</h1>
+            <button onClick={() => updateAuth(true)}>授权</button>
+            <button onClick={() => updateAuth(false)}>取消授权</button>
+            </div>
+        )
+    }
+
+   // 渲染组件到页面上
+   ReactDOM.render(React.createElement(AuthComponent, null), document.getElementById('root'));
+</script>
+
+</body>
+</html>
