@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobile Gesture Recognition</title>
+<style>
+  #container {
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+  }
+  .page {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+  }
+  #page1 { background-color: #f0f0f0; }
+  #page2 { background-color: #c0c0c0; }
+  #page3 { background-color: #808080; }
+</style>
+</head>
+<body>
+
+<div id="container">
+  <div id="page1" class="page">Page 1</div>
+  <div id="page2" class="page">Page 2</div>
+  <div id="page3" class="page">Page 3</div>
+</div>
+
+<script>
+    // 最关键 就是 监听 touch 事件 
+    // 判断 翻页
+  let container = document.getElementById('container');
+  let pages = document.querySelectorAll('.page');
+  let currentPageIndex = 0;
+  let startY = 0;
+  let touchMoved = false;
+
+  // 手指触摸事件
+  container.addEventListener('touchstart', function(e) {
+    startY = e.touches[0].clientY;
+    touchMoved = false;
+  });
+
+  // 手指移动事件
+  container.addEventListener('touchmove', function(e) {
+    touchMoved = true;
+  });
+
+  // 手指离开事件
+  container.addEventListener('touchend', function(e) {
+    if (!touchMoved) return; // 没有移动，不触发任何操作
+
+    let endY = e.changedTouches[0].clientY;
+    let deltaY = endY - startY;
+
+    if (deltaY > 50 && currentPageIndex > 0) {
+      // 上滑动作，切换到上一页
+      currentPageIndex--;
+      switchPage();
+    } else if (deltaY < -50 && currentPageIndex < pages.length - 1) {
+      // 下滑动作，切换到下一页
+      currentPageIndex++;
+      switchPage();
+    }
+  });
+
+  // 切换页面函数
+  function switchPage() {
+    let translateY = -currentPageIndex * 100;
+    container.style.transform = `translateY(${translateY}vh)`;
+  }
+</script>
+
+</body>
+</html>
